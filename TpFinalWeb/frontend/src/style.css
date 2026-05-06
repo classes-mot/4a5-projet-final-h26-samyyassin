@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #fff7f3;
+  color: #333;
+}
+
+.navbar {
+  background-color: #f2c6c2;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar h2 {
+  margin-right: auto;
+}
+
+.navbar button,
+.form button,
+.cart-item button {
+  background-color: #8b4a4a;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.navbar button:hover,
+.form button:hover,
+.cart-item button:hover {
+  background-color: #6f3838;
+}
+
+.page {
+  padding: 40px;
+}
+
+.accueil {
+  text-align: center;
+}
+
+.hero-img {
+  width: 400px;
+  max-width: 90%;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+.form {
+  background-color: white;
+  padding: 25px;
+  max-width: 400px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form input,
+.form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card,
+.cart-item {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  width: 250px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
