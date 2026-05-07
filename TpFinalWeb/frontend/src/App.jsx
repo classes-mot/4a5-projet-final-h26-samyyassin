@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import Accueil from "./pages/Accueil";
 import CreateCake from "./pages/CreateCake";
@@ -7,7 +7,6 @@ import Menu from "./pages/Menu";
 import Panier from "./pages/Panier";
 import Commander from "./pages/Commander";
 import Login from "./pages/Login";
-import Admin from "./pages/Admin";
 
 import translations from "./translations";
 
@@ -52,14 +51,13 @@ function App() {
         <Link to="/">{t.home}</Link>
         <Link to="/create">{t.create}</Link>
         <Link to="/menu">{t.menu}</Link>
-        <Link to="/panier">{t.cart} ({panier.length})</Link>
+        <Link to="/panier">
+          {t.cart} ({panier.length})
+        </Link>
         <Link to="/commander">{t.order}</Link>
 
         {token ? (
-          <>
-            <Link to="/admin">{t.admin}</Link>
-            <button onClick={logout}>{t.logout}</button>
-          </>
+          <button onClick={logout}>{t.logout}</button>
         ) : (
           <Link to="/login">{t.login}</Link>
         )}
@@ -71,16 +69,26 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Accueil t={t} />} />
-        <Route path="/create" element={<CreateCake ajouterAuPanier={ajouterAuPanier} t={t} />} />
-        <Route path="/menu" element={<Menu t={t} />} />
-        <Route path="/panier" element={<Panier panier={panier} supprimerDuPanier={supprimerDuPanier} t={t} />} />
-        <Route path="/commander" element={<Commander panier={panier} setPanier={setPanier} t={t} />} />
-        <Route path="/login" element={<Login setToken={setToken} />} />
-
         <Route
-          path="/admin"
-          element={token ? <Admin token={token} /> : <Navigate to="/login" />}
+          path="/create"
+          element={<CreateCake ajouterAuPanier={ajouterAuPanier} t={t} />}
         />
+        <Route path="/menu" element={<Menu t={t} />} />
+        <Route
+          path="/panier"
+          element={
+            <Panier
+              panier={panier}
+              supprimerDuPanier={supprimerDuPanier}
+              t={t}
+            />
+          }
+        />
+        <Route
+          path="/commander"
+          element={<Commander panier={panier} setPanier={setPanier} t={t} />}
+        />
+        <Route path="/login" element={<Login setToken={setToken} />} />
       </Routes>
     </BrowserRouter>
   );
