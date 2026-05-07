@@ -9,7 +9,9 @@ function Admin({ token }) {
   const [editId, setEditId] = useState(null);
 
   const fetchGateaux = async () => {
-    const response = await fetch("http://localhost:5000/api/gateaux");
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/gateaux`
+    );
     const data = await response.json();
     setGateaux(data);
   };
@@ -37,8 +39,8 @@ function Admin({ token }) {
     };
 
     const url = editId
-      ? `http://localhost:5000/api/gateaux/${editId}`
-      : "http://localhost:5000/api/gateaux";
+      ? `${import.meta.env.VITE_BACKEND_URL}/api/gateaux/${editId}`
+      : `${import.meta.env.VITE_BACKEND_URL}/api/gateaux`;
 
     const method = editId ? "PUT" : "POST";
 
@@ -69,12 +71,15 @@ function Admin({ token }) {
   };
 
   const supprimerGateau = async (id) => {
-    const response = await fetch(`http://localhost:5000/api/gateaux/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + token
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/gateaux/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + token
+        }
       }
-    });
+    );
 
     if (response.ok) {
       alert("Gâteau supprimé!");
@@ -97,11 +102,20 @@ function Admin({ token }) {
         <input value={filling} onChange={(e) => setFilling(e.target.value)} required />
 
         <label>Prix</label>
-        <input type="number" value={prix} onChange={(e) => setPrix(e.target.value)} required />
+        <input
+          type="number"
+          value={prix}
+          onChange={(e) => setPrix(e.target.value)}
+          required
+        />
 
         <button type="submit">{editId ? "Modifier" : "Ajouter"}</button>
 
-        {editId && <button type="button" onClick={resetForm}>Annuler</button>}
+        {editId && (
+          <button type="button" onClick={resetForm}>
+            Annuler
+          </button>
+        )}
       </form>
 
       <h2>Liste des gâteaux</h2>

@@ -15,13 +15,16 @@ function Commander({ panier, setPanier, t }) {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(commande)
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/orders`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(commande)
+        }
+      );
 
       if (response.ok) {
         alert("Commande envoyée avec succès!");

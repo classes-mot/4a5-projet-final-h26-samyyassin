@@ -14,8 +14,8 @@ function Login({ setToken }) {
 
     const url =
       mode === "login"
-        ? "http://localhost:5000/api/users/login"
-        : "http://localhost:5000/api/users/signup";
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/users/login`
+        : `${import.meta.env.VITE_BACKEND_URL}/api/users/signup`;
 
     const body =
       mode === "login"
@@ -55,10 +55,20 @@ function Login({ setToken }) {
         )}
 
         <label>Email</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
         <label>Mot de passe</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
         <button type="submit">
           {mode === "login" ? "Se connecter" : "Créer le compte"}

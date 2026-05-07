@@ -1,26 +1,41 @@
-function Menu() {
+import { useEffect, useState } from "react";
+
+function Menu({ t }) {
+  const [gateaux, setGateaux] = useState([]);
+
+  useEffect(() => {
+    const fetchGateaux = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/gateaux`
+        );
+        const data = await response.json();
+        setGateaux(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchGateaux();
+  }, []);
+
   return (
     <div className="page">
-      <h1>Menu</h1>
+      <h1>{t.menu}</h1>
 
       <div className="cards">
-        <div className="card">
-          <h2>4 pouces</h2>
-          <p>Petit gâteau personnalisé</p>
-          <h3>35 $</h3>
-        </div>
-
-        <div className="card">
-          <h2>6 pouces</h2>
-          <p>Format classique pour plusieurs portions</p>
-          <h3>60 $</h3>
-        </div>
-
-        <div className="card">
-          <h2>8 pouces</h2>
-          <p>Grand gâteau pour événements</p>
-          <h3>85 $</h3>
-        </div>
+        {gateaux.length === 0 ? (
+          <p>Aucun gâteau disponible.</p>
+        ) : (
+          gateaux.map((gateau) => (
+            <div className="card" key={gateau._id}>
+              <h2>{gateau.size}</h2>
+              <p>{t.flavor} : {gateau.saveur}</p>
+              <p>Filling : {gateau.filling}</p>
+              <h3>{gateau.prix} $</h3>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
