@@ -17,3 +17,44 @@ export const getOrders = async (req, res) => {
   const orders = await Order.find();
   res.json(orders);
 };
+
+export const getOrderById = async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ message: "Commande introuvable." });
+  }
+
+  res.json(order);
+};
+
+export const updateOrder = async (req, res) => {
+  const { email, items, total, statut } = req.body;
+
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ message: "Commande introuvable." });
+  }
+
+  order.email = email ?? order.email;
+  order.items = items ?? order.items;
+  order.total = total ?? order.total;
+  order.statut = statut ?? order.statut;
+
+  await order.save();
+
+  res.json(order);
+};
+
+export const deleteOrder = async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ message: "Commande introuvable." });
+  }
+
+  await order.deleteOne();
+
+  res.json({ message: "Commande supprimée." });
+};
