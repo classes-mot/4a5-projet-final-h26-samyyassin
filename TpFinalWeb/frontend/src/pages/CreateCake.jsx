@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function CreateCake({ ajouterAuPanier }) {
+function CreateCake({ ajouterAuPanier, t }) {
   const [size, setSize] = useState("6 pouces");
   const [saveur, setSaveur] = useState("vanille");
   const [filling, setFilling] = useState("fraise");
@@ -36,17 +36,17 @@ function CreateCake({ ajouterAuPanier }) {
 
   return (
     <div className="page">
-      <h1>Créer ton gâteau</h1>
+      <h1>{t.createCake}</h1>
 
       <form onSubmit={handleSubmit} className="form">
-        <label>Taille</label>
+        <label>{t.size}</label>
         <select value={size} onChange={(e) => setSize(e.target.value)}>
           <option>4 pouces</option>
           <option>6 pouces</option>
           <option>8 pouces</option>
         </select>
 
-        <label>Saveur</label>
+        <label>{t.flavor}</label>
         <select value={saveur} onChange={(e) => setSaveur(e.target.value)}>
           <option>vanille</option>
           <option>chocolat</option>
@@ -62,7 +62,7 @@ function CreateCake({ ajouterAuPanier }) {
           <option>vanille</option>
         </select>
 
-        <label>Quantité</label>
+        <label>{t.quantity}</label>
         <input
           type="number"
           min="1"
@@ -70,9 +70,9 @@ function CreateCake({ ajouterAuPanier }) {
           onChange={(e) => setQuantite(Number(e.target.value))}
         />
 
-        <h3>Total : {calculerPrix()} $</h3>
+        <h3>{t.total} : {calculerPrix()} $</h3>
 
-        <button type="submit">Ajouter au panier</button>
+        <button type="submit">{t.addToCart}</button>
       </form>
     </div>
   );

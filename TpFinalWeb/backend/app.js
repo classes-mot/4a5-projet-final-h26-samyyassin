@@ -8,6 +8,9 @@ import usersRoutes from "./routes/users-routes.js";
 
 import errorHandler from "./handler/error-handler.js";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
 
 app.use(cors());
@@ -24,10 +27,10 @@ app.use("/api/orders", ordersRoutes);
 app.use(errorHandler);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/cake-app")
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(5000, () => {
-      console.log("Server running on http://localhost:5000");
+    app.listen(process.env.PORT || 5000, () => {
+      console.log("Server running");
     });
   })
   .catch((err) => {

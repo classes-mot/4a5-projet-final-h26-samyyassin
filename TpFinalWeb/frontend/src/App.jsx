@@ -1,44 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+
 import Accueil from "./pages/Accueil";
 import CreateCake from "./pages/CreateCake";
 import Menu from "./pages/Menu";
 import Panier from "./pages/Panier";
 import Commander from "./pages/Commander";
+import Login from "./pages/Login";
+import Admin from "./pages/Admin";
+
+import translations from "./translations";
 
 function App() {
-  const [page, setPage] = useState("accueil");
   const [panier, setPanier] = useState([]);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [lang, setLang] = useState(localStorage.getItem("lang") || "fr");
+
+  const t = translations[lang];
 
   const ajouterAuPanier = (gateau) => {
     setPanier([...panier, gateau]);
   };
 
   const supprimerDuPanier = (index) => {
-    const nouveauPanier = panier.filter((item, i) => i !== index);
-    setPanier(nouveauPanier);
+    setPanier(panier.filter((item, i) => i !== index));
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
+  const changerLangue = () => {
+    const nouvelleLangue = lang === "fr" ? "en" : "fr";
+    setLang(nouvelleLangue);
+    localStorage.setItem("lang", nouvelleLangue);
+  };
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) {
+      setToken(savedToken);
+    }
+  }, []);
+
   return (
-    <div>
+    <BrowserRouter>
       <nav className="navbar">
         <h2>Cake Custom</h2>
-        <button onClick={() => setPage("accueil")}>Accueil</button>
-        <button onClick={() => setPage("create")}>Créer</button>
-        <button onClick={() => setPage("menu")}>Menu</button>
-        <button onClick={() => setPage("panier")}>
-          Panier ({panier.length})
+
+        <Link to="/">{t.home}</Link>
+        <Link to="/create">{t.create}</Link>
+        <Link to="/menu">{t.menu}</Link>
+        <Link to="/panier">{t.cart} ({panier.length})</Link>
+        <Link to="/commander">{t.order}</Link>
+
+        {token ? (
+          <>
+            <Link to="/admin">{t.admin}</Link>
+            <button onClick={logout}>{t.logout}</button>
+          </>
+        ) : (
+          <Link to="/login">{t.login}</Link>
+        )}
+
+        <button onClick={changerLangue}>
+          {lang === "fr" ? "EN" : "FR"}
         </button>
-        <button onClick={() => setPage("commander")}>Commander</button>
       </nav>
 
-      {page === "accueil" && <Accueil />}
-      {page === "create" && <CreateCake ajouterAuPanier={ajouterAuPanier} />}
-      {page === "menu" && <Menu />}
-      {page === "panier" && (
-        <Panier panier={panier} supprimerDuPanier={supprimerDuPanier} />
-      )}
-      {page === "commander" && <Commander panier={panier} setPanier={setPanier} />}
-    </div>
+      <Routes>
+        <Route path="/" element={<Accueil t={t} />} />
+        <Route path="/create" element={<CreateCake ajouterAuPanier={ajouterAuPanier} t={t} />} />
+        <Route path="/menu" element={<Menu t={t} />} />
+        <Route path="/panier" element={<Panier panier={panier} supprimerDuPanier={supprimerDuPanier} t={t} />} />
+        <Route path="/commander" element={<Commander panier={panier} setPanier={setPanier} t={t} />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
+
+        <Route
+          path="/admin"
+          element={token ? <Admin token={token} /> : <Navigate to="/login" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
